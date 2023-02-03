@@ -6,7 +6,7 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
-import { LoaderArgs } from "@remix-run/node";
+import { LoaderArgs, redirect } from "@remix-run/node";
 import {
   Outlet,
   useLoaderData,
@@ -21,6 +21,10 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   await ensureSession(request);
 
   var ladders = await db.ladder.findMany();
+
+  if (params.ladderId && !ladders.some((x) => x.id === params.ladderId)) {
+    return redirect("./");
+  }
 
   return ladders;
 };
