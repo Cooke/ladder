@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  emailVerified  DateTime?
+  ownedLadders   Ladder[]
+  externalLogins ExternalLogin[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user1Games     Game[]          @relation(name: "user1Game")
+  user2Games     Game[]          @relation(name: "user2Game")
+  reportedGames  Game[]          @relation(name: "reporter")
+  Standing       Standing[]
+}
+
+model ExternalLogin {
+  id                String @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Ladder {
+  id              String   @id
+  name            String
+  creatorId       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  currentSeasonId String?  @unique
+
+  creator       User     @relation(fields: [creatorId], references: [id])
+  seasons       Season[] @relation(name: "ladder")
+  currentSeason Season?  @relation(fields: [currentSeasonId], references: [id])
+}
+
+model Season {
+  id       String @id
+  number   Int
+  ladderId String
+
+  ladder    Ladder     @relation(fields: [ladderId], references: [id], name: "ladder")
+  standings Standing[]
+  games     Game[]
+
+  currentSeasonOfLadder Ladder?
+
+  @@unique([ladderId, number])
+}
+
+model Game {
+  id         String @id @default(cuid())
+  user1Id    String
+  user1Score Int
+  user2Id    String
+  user2Score Int
+  seasonId   String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  reporterId String
+
+  season   Season @relation(fields: [seasonId], references: [id])
+  user1    User   @relation(fields: [user1Id], references: [id], name: "user1Game")
+  user2    User   @relation(fields: [user2Id], references: [id], name: "user2Game")
+  reporter User   @relation(fields: [reporterId], references: [id], name: "reporter")
+}
+
+model Standing {
+  rating    Int
+  userId    String
+  seasonId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  season Season @relation(fields: [seasonId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@id([userId, seasonId])
+}
