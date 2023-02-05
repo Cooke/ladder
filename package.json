@@ -4,7 +4,7 @@
   "scripts": {
     "build": "remix build",
     "vercel-build": "prisma generate && prisma migrate deploy && remix build",
-    "dev": "remix dev",
+    "dev": "remix dev | pino-pretty",
     "typecheck": "tsc",
     "gen:theme-typings": "chakra-cli tokens app/theme.ts",
     "postinstall": "npm run gen:theme-typings"
@@ -23,6 +23,8 @@
     "@vercel/node": "^2.6.2",
     "framer-motion": "^6.5.1",
     "nanoid": "^4.0.0",
+    "pino": "^8.8.0",
+    "pino-pretty": "^9.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",
