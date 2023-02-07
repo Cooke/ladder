@@ -6,7 +6,7 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { json, LoaderArgs, redirect } from "@remix-run/node";
 import {
   Outlet,
   useLoaderData,
@@ -26,7 +26,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return redirect("./");
   }
 
-  return ladders;
+  return json(ladders);
 };
 
 export default function Index() {

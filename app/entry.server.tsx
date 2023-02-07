@@ -6,7 +6,6 @@ import { renderToString } from "react-dom/server";
 
 import { ServerStyleContext } from "./context";
 import createEmotionCache from "./createEmotionCache";
-import { logger } from "./services/logger.server";
 
 export default function handleRequest(
   request: Request,
@@ -14,7 +13,6 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  logger.info({ test: "digit" }, "New request");
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 

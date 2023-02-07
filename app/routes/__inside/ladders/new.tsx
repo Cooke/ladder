@@ -31,7 +31,7 @@ const newLadderSchema = z.object({
 
 type NewLadder = z.infer<typeof newLadderSchema>;
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request, context }: ActionArgs) => {
   var session = await ensureSession(request);
   const newLadder = await zx.parseForm(request, newLadderSchema);
 

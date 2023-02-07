@@ -1,5 +1,5 @@
 import { Button, FormControl, FormLabel, Select } from "@chakra-ui/react";
-import { ActionArgs, LoaderArgs, redirect } from "@remix-run/node";
+import { ActionArgs, json, LoaderArgs, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useParams } from "@remix-run/react";
 import { z } from "zod";
 import { ensureSession } from "~/services/auth.server";
@@ -17,13 +17,15 @@ const newGameSchema = z.object({
 export const loader = async ({ request, params }: LoaderArgs) => {
   const session = await ensureSession(request);
 
-  return await db.user.findMany({
-    where: {
-      id: {
-        not: session.userId,
+  return json(
+    await db.user.findMany({
+      where: {
+        id: {
+          not: session.userId,
+        },
       },
-    },
-  });
+    })
+  );
 };
 
 export const action = async ({ request, params }: ActionArgs) => {
