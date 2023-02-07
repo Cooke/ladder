@@ -22,7 +22,7 @@ export default async (req, res) => {
     { url: req.url, method: req.method },
     "Request %s %s",
     req.method,
-    reg.url
+    req.url
   );
 
   const result = await requestHandler(req, res);
