@@ -1,6 +1,6 @@
 import pino from "pino";
 import { env } from "./env.mjs";
-import logtailTransport from "@logtail/pino";
+const logtailTransport = require("@logtail/pino");
 
 let transport;
 if (env.LOGTAIL_TOKEN) {
