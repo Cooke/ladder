@@ -1,4 +1,4 @@
-import env from "env.mjs";
+import env from "~/services/env.server";
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import { sessionStorage } from "~/services/session.server";

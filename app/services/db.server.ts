@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import env from "env.mjs";
+import env from "~/services/env.server";
 
 let db: PrismaClient;
 

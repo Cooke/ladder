@@ -1,4 +1,4 @@
-import { env } from "env.mjs";
+import { env } from "~/services/env.server";
 import { createCookieSessionStorage } from "@remix-run/node";
 
 export const sessionCookieName = "_session";

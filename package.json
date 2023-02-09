@@ -4,7 +4,10 @@
   "scripts": {
     "build": "remix build",
     "vercel-build": "prisma generate && prisma migrate deploy && remix build",
-    "dev": "remix dev | pino-pretty",
+    "dev": "npm-run-all dev:build:* --parallel dev:watch:* dev:run:server",
+    "dev:build:server": "cross-env NODE_ENV=development esbuild --platform=node --format=cjs ./server.express.ts --outdir=api --bundle",
+    "dev:watch:remix": "cross-env NODE_ENV=development remix watch",
+    "dev:run:server": "cross-env NODE_ENV=development node --inspect --require ./node_modules/dotenv/config ./api/server.express.js | pino-pretty",
     "typecheck": "tsc",
     "gen:theme-typings": "chakra-cli tokens app/theme.ts",
     "postinstall": "npm run gen:theme-typings"
@@ -21,7 +24,13 @@
     "@remix-run/node": "^1.11.1",
     "@remix-run/react": "^1.11.1",
     "@remix-run/vercel": "^1.11.1",
+    "@types/compression": "^1.7.2",
+    "@types/express": "^4.17.17",
     "@vercel/node": "^2.6.2",
+    "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.17.6",
+    "express": "^4.18.2",
     "framer-motion": "^6.5.1",
     "nanoid": "^4.0.0",
     "pino": "^8.8.0",
@@ -44,6 +53,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "eslint": "^8.27.0",
+    "npm-run-all": "^4.1.5",
     "prisma": "^4.9.0",
     "typescript": "^4.8.4"
   },
