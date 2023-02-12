@@ -8,7 +8,8 @@ const schema = z.object({
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   BASE_URL: z.string().url(),
-  LOGTAIL_TOKEN: z.string().optional()
+  SEQ_API_KEY: z.string().optional(),
+  SEQ_SERVER: z.string().url().optional()
 });
 
 /**
@@ -21,7 +22,8 @@ const raw = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   BASE_URL: process.env.BASE_URL,
-  LOGTAIL_TOKEN: process.env.LOGTAIL_SOURCE_TOKEN
+  SEQ_API_KEY: process.env.SEQ_API_KEY,
+  SEQ_SERVER: process.env.SEQ_SERVER
 };
 
 const parseResult = schema.safeParse(raw);
