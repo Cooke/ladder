@@ -19,21 +19,17 @@ export default function Index() {
   return (
     <Container centerContent>
       <Heading
-        color="primary.400"
+        color="primary"
         sx={{ fontSize: 100 }}
         fontWeight="extrabold"
         letterSpacing="tight"
         mt="20"
       >
-        St
-        <Text as="span" color="primary.700">
-          eg
-        </Text>
-        en
+        Stegen
       </Heading>
       <Box mt="lg">
         <form method="post" action="/auth/google">
-          <Button type="submit" colorScheme={"primary"} size="lg">
+          <Button type="submit" variant={"secondary"} size="lg">
             Logga in med Google
           </Button>
         </form>

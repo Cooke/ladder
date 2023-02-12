@@ -49,7 +49,11 @@ export const newGameSchema = z.object({
   result: z.enum(["win", "loss", "draw"]),
 });
 
-export const action = async ({ request, params }: ActionArgs) => {
+export const action = async ({
+  request,
+  params,
+  context: { logger },
+}: ActionArgs) => {
   const session = await ensureSession(request);
 
   const input = await zx.parseForm(request, newGameSchema);
@@ -64,8 +68,12 @@ export const action = async ({ request, params }: ActionArgs) => {
   const seasonId = ladder.currentSeasonId!;
   const user1Id = session.userId;
   const user2Id = input.opponentUserId;
+  const userScores =
+    input.result === "win"
+      ? { user1Score: 1, user2Score: 0 }
+      : { user1Score: 0, user2Score: 1 };
 
-  await db.$transaction(
+  const game = await db.$transaction(
     async (tx) => {
       const standingUser1 = await ensureStanding(user1Id);
       const standingUser2 = await ensureStanding(user2Id);
@@ -79,15 +87,13 @@ export const action = async ({ request, params }: ActionArgs) => {
       await updateStandingRating(user1Id, newRatings.player1Rating);
       await updateStandingRating(user2Id, newRatings.player2Rating);
 
-      await tx.game.create({
+      const game = await tx.game.create({
         data: {
           user1Id,
           user2Id,
           reporterId: session.userId,
           seasonId,
-          ...(input.result === "win"
-            ? { user1Score: 1, user2Score: 0 }
-            : { user1Score: 0, user2Score: 1 }),
+          ...userScores,
         },
       });
 
@@ -121,8 +127,38 @@ export const action = async ({ request, params }: ActionArgs) => {
           },
         });
       }
+
+      return game;
     },
     { isolationLevel: "Serializable" }
+  );
+
+  const users = await db.user.findMany({
+    where: {
+      id: {
+        in: [user1Id, user2Id],
+      },
+    },
+  });
+  const user1 = users.find((x) => x.id === user1Id);
+  const user2 = users.find((x) => x.id === user2Id);
+  logger.info(
+    {
+      ladderId,
+      user1Id,
+      user2Id,
+      gameId: game.id,
+      ...userScores,
+      user1Name: user1?.name,
+      user2Name: user2?.name,
+    },
+    "Registered game between %s (%s) and %s (%s): %d - %d",
+    user1Id,
+    user1?.name,
+    user2Id,
+    user2?.name,
+    userScores.user1Score,
+    userScores.user2Score
   );
 
   return redirect(`/ladders/${ladder.id}`);

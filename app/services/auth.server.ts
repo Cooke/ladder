@@ -17,7 +17,7 @@ let googleStrategy = new GoogleStrategy<Session>(
     callbackURL: env.BASE_URL + "/auth/google/callback",
   },
   async ({ profile, context }) => {
-    const providerAccountId = profile.id;
+    const providerAccountId: any = profile.id;
 
     let user = await db.user.findFirst({
       select: {
@@ -58,8 +58,8 @@ let googleStrategy = new GoogleStrategy<Session>(
         user = { id: login.userId };
 
         context?.logger.info(
-          { userId: user.id, profile },
-          "Created user %s (%s)",
+          { userId: user.id, profile, event: "user-created" },
+          "Created and logged in user %s (%s)",
           user.id,
           profile.displayName
         );
@@ -67,6 +67,13 @@ let googleStrategy = new GoogleStrategy<Session>(
         context?.logger.error(error, "Failed to create new user");
         throw error;
       }
+    } else {
+      context?.logger.info(
+        { userId: user.id, profile, event: "user-login" },
+        "Logged in user %s (%s)",
+        user.id,
+        profile.displayName
+      );
     }
 
     return { userId: user.id };
