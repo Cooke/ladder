@@ -1,6 +1,6 @@
 import { AppLoadContext } from "@remix-run/node";
 import { nanoid } from "nanoid";
-import { logger as rootLogger } from "./logger.js";
+import { logger as rootLogger } from "../logger.js";
 
 export function createRequestContext() {
   const requestId = nanoid();

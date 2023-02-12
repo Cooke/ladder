@@ -2,7 +2,7 @@ import path from "path";
 import express, { NextFunction, Request, Response } from "express";
 import compression from "compression";
 import { createRequestHandler } from "@remix-run/express";
-import { createRequestContext, logRequest } from "server.common";
+import { createRequestContext, logRequest } from "servers/common";
 
 const buildPath = path.join(process.cwd(), "api/index.js");
 const publicPath = "/build/";
