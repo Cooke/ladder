@@ -9,7 +9,9 @@
     "dev:watch:remix": "cross-env NODE_ENV=development remix watch",
     "dev:run:server": "cross-env NODE_ENV=development node --inspect --require ./node_modules/dotenv/config ./api/server.express.js | pino-pretty",
     "typecheck": "tsc",
-    "gen:theme-typings": "chakra-cli tokens app/theme.ts",
+    "gen": "run-p gen:*",
+    "gen:db-typings": "prisma generate",
+    "gen:theme-typings": "chakra-cli tokens app/styling/theme.ts",
     "postinstall": "npm run gen:theme-typings"
   },
   "dependencies": {

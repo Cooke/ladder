@@ -1,6 +1,9 @@
 import {
   Button,
   ButtonGroup,
+  Card,
+  CardBody,
+  CardHeader,
   Container,
   FormControl,
   FormErrorMessage,
@@ -67,11 +70,13 @@ export default function Index() {
     useAppForm<NewLadder>(newLadderSchema);
 
   return (
-    <>
+    <Container>
       <Form method="post" onSubmit={handleSubmit}>
-        <Container>
-          <VStack alignItems="stretch">
+        <Card>
+          <CardHeader>
             <Heading>Skapa stege</Heading>
+          </CardHeader>
+          <CardBody>
             <FormControl isInvalid={!!formState.errors.name}>
               <FormLabel>Namn</FormLabel>
               <Input {...register("name")} name="name" type="text" />
@@ -80,17 +85,17 @@ export default function Index() {
               </FormErrorMessage>
             </FormControl>
 
-            <ButtonGroup justifyContent="right">
-              <Button variant="outline" as={RemixLink} to="/ladders">
+            <ButtonGroup justifyContent={"flex-end"} w="100%" mt="lg">
+              <Button variant="secondary" as={RemixLink} to="/ladders">
                 Avbryt
               </Button>
-              <Button colorScheme="teal" type="submit">
-                Skapa
+              <Button type="submit" variant={"primary"}>
+                Skapa stege
               </Button>
             </ButtonGroup>
-          </VStack>
-        </Container>
+          </CardBody>
+        </Card>
       </Form>
-    </>
+    </Container>
   );
 }

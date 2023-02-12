@@ -1,14 +1,25 @@
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   Container,
+  Flex,
   Heading,
   HStack,
-  VStack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
 } from "@chakra-ui/react";
 import { json, LoaderArgs } from "@remix-run/node";
-import { Form, useLoaderData, useLocation, useMatches } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { RemixLink } from "~/components/RemixLink";
 import { ensureSession } from "~/services/auth.server";
 
@@ -26,7 +37,29 @@ export const loader = async ({ request, params }: LoaderArgs) => {
           include: {
             standings: {
               include: {
-                user: true,
+                user: {
+                  select: {
+                    name: true,
+                    _count: {
+                      select: {
+                        user1Games: {
+                          where: {
+                            season: {
+                              ladderId,
+                            },
+                          },
+                        },
+                        user2Games: {
+                          where: {
+                            season: {
+                              ladderId,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
               orderBy: {
                 rating: "desc",
@@ -46,30 +79,76 @@ export default function Index() {
   const standings = ladder.currentSeason!.standings;
   return (
     <Container>
-      <HStack mb="4">
-        <Heading mr="auto">{ladder.name}</Heading>
-      </HStack>
-      <Heading as="h2" size={"md"}>
-        Ställning
-      </Heading>
-      <VStack alignItems="stretch">
-        <Row
-          pos={<Text color="blue">#</Text>}
-          name={"Namn"}
-          score="Poäng"
-        ></Row>
-        {standings.map((member, index) => (
-          <Row
-            key={index}
-            pos={index + 1}
-            name={member.user.name}
-            score={member.rating}
-          ></Row>
-        ))}
-      </VStack>
-      <Button as={RemixLink} to={`/games/new/${ladder.id}`}>
-        Registrera resultat
-      </Button>
+      <Card>
+        <CardHeader>
+          <Heading>{ladder.name}</Heading>
+        </CardHeader>
+        <CardBody>
+          {standings.length > 0 ? (
+            <>
+              <TableContainer>
+                <Table size={"sm"}>
+                  <Thead>
+                    <Tr>
+                      <Th isNumeric>#</Th>
+                      <Th>Namn</Th>
+                      <Th isNumeric>Matcher</Th>
+                      <Th isNumeric>Poäng</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {standings.map((member, index) => (
+                      <Tr
+                        key={index}
+                        bg={
+                          member.userId === userId
+                            ? "oragnge-salmon"
+                            : undefined
+                        }
+                      >
+                        <Td isNumeric>{index + 1}</Td>
+                        <Td w="100%">{member.user.name}</Td>
+                        <Td isNumeric>
+                          {member.user._count.user1Games +
+                            member.user._count.user2Games}
+                        </Td>
+                        <Td isNumeric>{member.rating}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+
+              <Flex justify={"right"}>
+                <Button
+                  mt="md"
+                  as={RemixLink}
+                  to={`/games/new/${ladder.id}`}
+                  variant="secondary"
+                  width={{
+                    base: "100%",
+                    sm: "auto",
+                  }}
+                >
+                  Registrera nytt resultat
+                </Button>
+              </Flex>
+            </>
+          ) : (
+            <Button
+              as={RemixLink}
+              to={`/games/new/${ladder.id}`}
+              variant="secondary"
+              width={{
+                base: "100%",
+                sm: "auto",
+              }}
+            >
+              Registrera första resultat
+            </Button>
+          )}
+        </CardBody>
+      </Card>
     </Container>
   );
 }

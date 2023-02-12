@@ -3,8 +3,8 @@ import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 
-import { ClientStyleContext } from "./context";
-import createEmotionCache, { defaultCache } from "./createEmotionCache";
+import { ClientStyleContext } from "~/styling/stylingContext";
+import createEmotionCache, { defaultCache } from "~/styling/createEmotionCache";
 
 interface ClientCacheProviderProps {
   children: React.ReactNode;

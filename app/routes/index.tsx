@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Text } from "@chakra-ui/react";
 import { LoaderArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Navbar from "~/components/Navbar";
@@ -12,19 +12,32 @@ export async function loader({ request }: LoaderArgs) {
   });
   let session = await getSession(request.headers.get(sessionCookieName));
   let error = session.get(authenticator.sessionErrorKey);
-  console.log("session", session.data);
   return json({ error });
 }
 
 export default function Index() {
-  const data = useLoaderData<typeof loader>();
-
   return (
-    <>
-      <form method="post" action="/auth/google">
-        <Button type="submit">Sign in with Google</Button>
-        <code>{JSON.stringify(data)}</code>
-      </form>
-    </>
+    <Container centerContent>
+      <Heading
+        color="primary.400"
+        sx={{ fontSize: 100 }}
+        fontWeight="extrabold"
+        letterSpacing="tight"
+        mt="20"
+      >
+        St
+        <Text as="span" color="primary.700">
+          eg
+        </Text>
+        en
+      </Heading>
+      <Box mt="lg">
+        <form method="post" action="/auth/google">
+          <Button type="submit" colorScheme={"primary"} size="lg">
+            Logga in med Google
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }

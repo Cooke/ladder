@@ -1,44 +1,39 @@
 import {
-  Box,
-  Flex,
-  Text,
-  IconButton,
-  Button,
-  Stack,
-  Collapse,
-  Icon,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
-} from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  CloseIcon,
+  HamburgerIcon,
 } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Collapse,
+  Flex,
+  Icon,
+  IconButton,
+  Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Stack,
+  Text,
+  useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { RemixLink } from "./RemixLink";
-import { Form } from "@remix-run/react";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box mb="6">
+    <Box mb="6vh">
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
+        bg="white"
       >
         <Flex
           flex={{ base: 1, md: "auto" }}
@@ -61,7 +56,7 @@ export default function WithSubnavigation() {
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
             fontWeight="bold"
-            color={useColorModeValue("brand", "white")}
+            color={"primary"}
           >
             Stegen
           </Link>
