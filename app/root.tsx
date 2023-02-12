@@ -16,6 +16,7 @@ import {
   ServerStyleContext,
 } from "./styling/stylingContext";
 import theme from "./styling/theme";
+import { logger } from "logger";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -104,6 +105,18 @@ export default function App() {
       <ChakraProvider theme={theme}>
         <Outlet />
       </ChakraProvider>
+    </Document>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  logger.error(error, "Unexpected error");
+  return (
+    <Document>
+      <div className="error-container">
+        <h1>Oj, ett oväntat fel uppstod</h1>
+        <pre>{error.message}</pre>
+      </div>
     </Document>
   );
 }

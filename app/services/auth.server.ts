@@ -3,6 +3,7 @@ import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import { sessionStorage } from "~/services/session.server";
 import { db } from "./db.server";
+import { logger } from "logger";
 
 export interface Session {
   userId: string;
@@ -58,7 +59,7 @@ let googleStrategy = new GoogleStrategy<Session>(
         user = { id: login.userId };
 
         context?.logger.info(
-          { userId: user.id, profile, event: "user-created" },
+          { userId: user.id, profile, tag: "user-created" },
           "Created and logged in user %s (%s)",
           user.id,
           profile.displayName
@@ -69,7 +70,7 @@ let googleStrategy = new GoogleStrategy<Session>(
       }
     } else {
       context?.logger.info(
-        { userId: user.id, profile, event: "user-login" },
+        { userId: user.id, profile, tag: "user-login" },
         "Logged in user %s (%s)",
         user.id,
         profile.displayName

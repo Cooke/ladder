@@ -43,8 +43,8 @@ function createPrismaClient() {
   });
 
   client.$on("query", (e) => {
-    logger.info(
-      { duration: e.duration, target: e.target },
+    logger.debug(
+      { duration: e.duration, target: e.target, tag: "db-query" },
       "Db query: %s (params: %s) (%d ms)",
       e.query,
       e.params,

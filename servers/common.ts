@@ -18,12 +18,18 @@ export function logRequest(
   }
 ) {
   const duration = Date.now() - context.requestStart;
-  context.logger.info(
+  const logArguments = [
     { ...data, requestId: context.requestId, duration },
     "%s %s %s (%d ms)",
     data.method,
     data.url,
     data.statusCode,
-    duration
-  );
+    duration,
+  ] as const;
+
+  if (data.statusCode >= 500) {
+    context.logger.error(...logArguments);
+  } else {
+    context.logger.info(...logArguments);
+  }
 }

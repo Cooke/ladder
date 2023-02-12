@@ -151,6 +151,7 @@ export const action = async ({
       ...userScores,
       user1Name: user1?.name,
       user2Name: user2?.name,
+      tag: "game-created"
     },
     "Registered game between %s (%s) and %s (%s): %d - %d",
     user1Id,
