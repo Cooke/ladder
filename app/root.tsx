@@ -110,7 +110,6 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  logger.error(error, "Unexpected error");
   return (
     <Document>
       <div className="error-container">
