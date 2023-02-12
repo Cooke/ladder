@@ -1,5 +1,5 @@
 // Make sure environment variables are valid
-import "./app/services/env.server";
+import "../app/services/env.server";
 import * as build from "@remix-run/dev/server-build";
 import { createRequestHandler } from "@remix-run/vercel";
 import { VercelRequest, VercelResponse } from "@vercel/node";
