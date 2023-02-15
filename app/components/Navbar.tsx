@@ -21,10 +21,16 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useLocation } from "@remix-run/react";
+import { useEffect } from "react";
 import { RemixLink } from "./RemixLink";
 
 export default function WithSubnavigation() {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const location = useLocation();
+  useEffect(() => {
+    onClose();
+  }, [location.pathname]);
 
   return (
     <Box mb="6vh">

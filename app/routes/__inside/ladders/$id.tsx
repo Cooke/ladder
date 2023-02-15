@@ -8,6 +8,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Show,
   Table,
   TableContainer,
   Tbody,
@@ -92,8 +93,14 @@ export default function Index() {
                     <Tr>
                       <Th isNumeric>#</Th>
                       <Th>Namn</Th>
-                      <Th isNumeric>Matcher</Th>
-                      <Th isNumeric>Poäng</Th>
+                      <Th isNumeric>
+                        <Show above="sm">Matcher</Show>
+                        <Show below="sm">M</Show>
+                      </Th>
+                      <Th isNumeric>
+                        <Show above="sm">Poäng</Show>
+                        <Show below="sm">P</Show>
+                      </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -101,13 +108,15 @@ export default function Index() {
                       <Tr
                         key={index}
                         bg={
-                          member.userId === userId
-                            ? "oragnge-salmon"
-                            : undefined
+                          member.userId === userId ? "violate-light" : undefined
                         }
                       >
                         <Td isNumeric>{index + 1}</Td>
-                        <Td w="100%">{member.user.name}</Td>
+                        <Td w="100%">
+                          <Text isTruncated maxWidth={"45vw"}>
+                            {member.user.name}
+                          </Text>
+                        </Td>
                         <Td isNumeric>
                           {member.user._count.user1Games +
                             member.user._count.user2Games}

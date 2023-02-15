@@ -20,6 +20,7 @@ import { ensureSession } from "~/services/auth.server";
 
 import { db } from "~/services/db.server";
 import { calculateNewRating } from "~/services/elo.server";
+import env from "~/services/env.server";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const session = await ensureSession(request);
@@ -71,7 +72,9 @@ export const action = async ({
   const userScores =
     input.result === "win"
       ? { user1Score: 1, user2Score: 0 }
-      : { user1Score: 0, user2Score: 1 };
+      : input.result === "loss"
+      ? { user1Score: 0, user2Score: 1 }
+      : { user1Score: 1, user2Score: 1 };
 
   const game = await db.$transaction(
     async (tx) => {
@@ -151,7 +154,7 @@ export const action = async ({
       ...userScores,
       user1Name: user1?.name,
       user2Name: user2?.name,
-      tag: "game-created"
+      tag: "game-created",
     },
     "Registered game between %s (%s) and %s (%s): %d - %d",
     user1Id,
@@ -161,6 +164,16 @@ export const action = async ({
     userScores.user1Score,
     userScores.user2Score
   );
+
+  if (env.SLACK_HOOK_URL) {
+    await fetch(env.SLACK_HOOK_URL, {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        text: `Resultat ${ladder.name}: ${user1?.name} - ${user2?.name}: ${userScores.user1Score} - ${userScores.user2Score}`,
+      }),
+    });
+  }
 
   return redirect(`/ladders/${ladder.id}`);
 };
