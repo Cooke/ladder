@@ -21,6 +21,7 @@ import { ensureSession } from "~/services/auth.server";
 import { db } from "~/services/db.server";
 import { calculateNewRating } from "~/services/elo.server";
 import env from "~/services/env.server";
+import { logger } from "~/services/logger.server";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const session = await ensureSession(request);
@@ -50,11 +51,7 @@ export const newGameSchema = z.object({
   result: z.enum(["win", "loss", "draw"]),
 });
 
-export const action = async ({
-  request,
-  params,
-  context: { logger },
-}: ActionArgs) => {
+export const action = async ({ request, params }: ActionArgs) => {
   const session = await ensureSession(request);
 
   const input = await zx.parseForm(request, newGameSchema);
