@@ -58,18 +58,18 @@ let googleStrategy = new GoogleStrategy<Session>(
         });
         user = { id: login.userId };
 
-        context?.logger.info(
+        logger.info(
           { userId: user.id, profile, tag: "user-created" },
           "Created and logged in user %s (%s)",
           user.id,
           profile.displayName
         );
       } catch (error) {
-        context?.logger.error(error, "Failed to create new user");
+        logger.error(error, "Failed to create new user");
         throw error;
       }
     } else {
-      context?.logger.info(
+      logger.info(
         { userId: user.id, profile, tag: "user-login" },
         "Logged in user %s (%s)",
         user.id,
