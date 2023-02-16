@@ -3,7 +3,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "vercel-build": "prisma generate && prisma migrate deploy && remix build",
+    "vercel-build": "prisma generate && prisma migrate deploy && npm list --depth=0 && remix build",
     "dev": "npm-run-all dev:build:* --parallel dev:watch:* dev:run:server",
     "dev:build:server": "cross-env NODE_ENV=development esbuild --platform=node --format=cjs ./servers/express.ts --outdir=api --bundle",
     "dev:watch:remix": "cross-env NODE_ENV=development remix watch",
