@@ -3,7 +3,7 @@ import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import { sessionStorage } from "~/services/session.server";
 import { db } from "./db.server";
-import { logger } from "logger";
+import { logger } from "~/services/logger.server";
 
 export interface Session {
   userId: string;

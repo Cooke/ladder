@@ -1,5 +1,5 @@
 import pino from "pino";
-import { env } from "./app/services/env.server";
+import { env } from "./env.server";
 import pinoToSeq from "pino-seq";
 
 let stream;

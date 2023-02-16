@@ -16,7 +16,7 @@ import {
   ServerStyleContext,
 } from "./styling/stylingContext";
 import theme from "./styling/theme";
-import { logger } from "logger";
+import { logger } from "~/services/logger.server";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
