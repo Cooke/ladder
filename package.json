@@ -3,10 +3,10 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "vercel-build": "prisma generate && prisma migrate deploy && remix build",
     "dev": "remix dev",
     "typecheck": "tsc",
     "gen": "run-p gen:*",
+    "deploy": "fly deploy --remote-only",
     "gen:db-typings": "prisma generate",
     "gen:theme-typings": "chakra-cli tokens app/styling/theme.ts",
     "postinstall": "prisma generate || true && npm run gen:theme-typings"
