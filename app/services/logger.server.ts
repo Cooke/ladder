@@ -11,3 +11,4 @@ if (env.SEQ_SERVER) {
 }
 
 export const logger = pino({ level: "debug" }, stream ?? process.stdout);
+console.log(`Logger 1`, !!logger);

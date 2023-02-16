@@ -5,6 +5,7 @@ import { logger as rootLogger } from "../app/services/logger.server.js";
 export function createRequestContext() {
   const requestId = nanoid();
   const logger = rootLogger.child({ requestId });
+  console.log(`Logger 2`, !!logger);
   const requestStart = Date.now();
   return { requestId, logger, requestStart };
 }
