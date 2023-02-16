@@ -8,7 +8,7 @@ import { createRequestContext, logRequest } from "./common";
 const requestHandler = createRequestHandler({
   build,
   mode: process.env.NODE_ENV,
-  getLoadContext: (req) => (req as any).context,
+  getLoadContext: (req) => (req as any).context ?? createRequestContext(),
 });
 
 export default async (req: VercelRequest, res: VercelResponse) => {
