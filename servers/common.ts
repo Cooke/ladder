@@ -6,6 +6,7 @@ export function createRequestContext() {
   const requestId = nanoid();
   const logger = rootLogger.child({ requestId });
   console.log(`Logger 2`, !!logger);
+  logger.info("#Logger 2");
   const requestStart = Date.now();
   return { requestId, logger, requestStart };
 }

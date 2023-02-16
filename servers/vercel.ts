@@ -4,6 +4,7 @@ import * as build from "@remix-run/dev/server-build";
 import { createRequestHandler } from "@remix-run/vercel";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { createRequestContext, logRequest } from "./common";
+import { logger } from "~/services/logger.server";
 
 const requestHandler = createRequestHandler({
   build,
@@ -12,6 +13,7 @@ const requestHandler = createRequestHandler({
 });
 
 export default async (req: VercelRequest, res: VercelResponse) => {
+  logger.info("#New request");
   const context = createRequestContext();
   (req as any).context = context;
 
